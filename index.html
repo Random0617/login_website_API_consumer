@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>API Consumer</title>
+</head>
+<body>
+    <h2>Find Username by User ID</h2>
+    <input type="number" id="userId" placeholder="Enter User ID">
+    <button onclick="fetchUsername()">Get Username</button>
+    <p id="result"></p>
+
+    <script>
+        function fetchUsername() {
+            let userId = document.getElementById("userId").value;
+            if (userId === "") {
+                alert("Please enter a User ID.");
+                return;
+            }
+
+            fetch(`http://localhost/login_website/api.php?id=${userId}`)
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById("result").innerText = 
+                        data.username ? `Username: ${data.username}` : data.error;
+                })
+                .catch(error => console.error("Error:", error));
+        }
+    </script>
+</body>
+</html>
