@@ -4,9 +4,10 @@
     <title>API Consumer</title>
 </head>
 <body>
+    <!-- HTML only, nothing extra to learn here -->
     <h2>Find Username by User ID</h2>
     <input type="number" id="userId" placeholder="Enter User ID">
-    <button onclick="fetchUsername()">Get Username</button>
+    <button onclick="fetchUsername()">Get Username</button> <!-- Action button -->
     <p id="result"></p>
 
     <script>
@@ -16,7 +17,31 @@
                 alert("Please enter a User ID.");
                 return;
             }
+            
+            // 1. Send a request to the API with the user ID.
+            let apiUrl = `http://localhost/login_website/api.php?id=${userId}`;
+            let response = fetch(apiUrl);
 
+            // 2. Once the response is received, convert it to JSON format.
+            response.then(function(response) {
+                return response.json();
+            }).then(function(data) {
+                // In this code, the then(function(data) {...}) is handling the data that was returned by the previous step (which was the call to response.json()).
+                // 3. Check if there is a 'username' in the response.
+                if (data.username) {
+                    document.getElementById("result").innerText = `Username: ${data.username}`;
+                } else {
+                    document.getElementById("result").innerText = data.error;
+                }
+
+            }).catch(function(error) {
+                // 4. If there's an error with the request, log it to the console.
+                console.error("Error:", error);
+            });
+            /*
+            https://www.w3schools.com/jsref/api_fetch.asp
+
+            Equivalent to:
             fetch(`http://localhost/login_website/api.php?id=${userId}`)
                 .then(response => response.json())
                 .then(data => {
@@ -24,6 +49,7 @@
                         data.username ? `Username: ${data.username}` : data.error;
                 })
                 .catch(error => console.error("Error:", error));
+            */
         }
     </script>
 </body>
